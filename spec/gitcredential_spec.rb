@@ -2,10 +2,10 @@ require 'spec_helper'
 
 describe Gitcredential do
 
-  user_one = SecureRandom.hex 8
-  user_two = SecureRandom.hex 8
-  pw_one = SecureRandom.hex 8
-  pw_two = SecureRandom.hex 8
+  user_one = "user1_#{SecureRandom.hex 8}"
+  user_two = "user2_#{SecureRandom.hex 8}"
+  pw_one = "pw1_#{SecureRandom.hex 8}"
+  pw_two = "pw2_#{SecureRandom.hex 8}"
   
   user_data = { :proto => "https",
     :host => "gitcredential.example.rspec",
