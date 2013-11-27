@@ -50,17 +50,24 @@ __EOS
   end
 
   def set u
+    unset(u) unless get(u).nil?
     IO.popen([cmd, 'store'], mode='r+') { |fd|
       fd.write(set_payload u)
       fd.close_write
-      puts fd.read
     }
+    raise "can't save pw for #{u[:user]}" if get(u).nil?
     true
   end
 
   def unset u
-    nil
+    return true if get(u).nil?
+
+    IO.popen([cmd, 'erase'], mode='r+') { |fd|
+      fd.write(get_payload u)
+      fd.close_write
+    }
+
+    raise "deletion error on #{u[:user]}" unless get(u).nil?
+    true
   end
-
-
 end
