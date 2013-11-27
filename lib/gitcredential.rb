@@ -35,15 +35,27 @@ __EOS
   end
 
   def set_payload set_data={}
-    get_payload(set_data) + "password=#{set_data[:pw]}\n"
+    get_payload(set_data) + "password=#{set_data[:password]}\n"
   end
 
   def get u
-    nil
+    out = nil
+    IO.popen([cmd, 'get'], mode='r+') { |fd|
+      fd.write(get_payload u)
+      fd.close_write
+      out = fd.read
+    }
+    return nil if (out.nil? or out.empty?)
+    out.sub!(/^password=/, '').chomp
   end
 
   def set u
-    nil
+    IO.popen([cmd, 'store'], mode='r+') { |fd|
+      fd.write(set_payload u)
+      fd.close_write
+      puts fd.read
+    }
+    true
   end
 
   def unset u
