@@ -13,7 +13,7 @@ describe Gitcredential do
     :user => user_one }
   
   it "uses the default backend" do
-    Gitcredential.new.backend.should eq "default"
+    Gitcredential.new.backend.should eq Gitcredential.default_backend
   end
 
   it "only allows known backends" do
@@ -33,7 +33,7 @@ describe Gitcredential do
 
   it "can retrieve user accounts" do
     gc = Gitcredential.new
-    gc.get(user_data).should be pw_one
+    gc.get(user_data).should eq pw_one
   end
 
   it "can overwrite passwords" do
@@ -58,6 +58,7 @@ describe Gitcredential do
   end
 
   it "does cleanup" do
+    gc = Gitcredential.new
     gc.unset(user_data)
     gc.unset(user_data.merge(:user => user_two))
   end
