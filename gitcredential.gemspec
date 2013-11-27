@@ -1,4 +1,6 @@
-Gem::Specification do |s|
+require 'find'
+
+Gem::Specification.new do |s|
   s.name = 'gitcredential'
   s.version = File.read("VERSION").chomp
   s.summary = 'Ruby Wrapper for `git credential`'
