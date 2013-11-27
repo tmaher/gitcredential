@@ -18,6 +18,23 @@ class Gitcredential
     @backend = args[:backend] || Gitcredential.default_backend
 
     raise Exception "no such backend" unless @valid_backends.include?(@backend)
+
+    begin
+      `#{cmd} 2>/dev/null`
+    rescue Errno::ENOENT
+      ["/usr/local/lib/git-core", "/usr/local/libexec/git-core",
+       "/usr/lib/git-core", "/usr/libexec/git-core",
+       "/Library/Developer/CommandLineTools/usr/libexec/git-core"].each do |dir|
+        found=false
+        if File.exists? "#{dir}/#{cmd}"
+          ENV["PATH"] += ":#{dir}"
+          found=true
+          break
+        end
+        raise "can not find backend helper" unless found
+      end
+    end
+
   end
 
   def cmd
