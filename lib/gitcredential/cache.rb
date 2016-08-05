@@ -47,8 +47,9 @@ private
     validate_cred! cred
     strings = []
     strings << "url=#{cred[:url]}" if cred[:url]
-    cred.each { |k,v| strings << "#{k}=#{v}" unless k == :url }
-
+    cred.each do |k,v|
+      strings << "#{k}=#{v}" unless [:url,:timeout].include? k
+    end
     strings
   end
 
